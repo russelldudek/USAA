@@ -1,0 +1,72 @@
+name: Build and deploy candidate vision
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install campaign build dependencies
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright pymupdf beautifulsoup4
+          playwright install --with-deps chromium
+
+      - name: Materialize official identity and PDFs
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
+        run: |
+          mkdir -p assets/brand docs
+          curl --fail --location --retry 3 \
+            'https://cdn.prgloo.com/web/USAA/USAAplaceholder.png' \
+            --output assets/brand/usaa-logo-official.png
+          python scripts/build_pdfs.py
+          python scripts/verify_campaign.py
+
+      - name: Commit materialized assets to main
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/brand/usaa-logo-official.png docs
+          if ! git diff --cached --quiet; then
+            git commit -m 'Materialize audited campaign assets and PDFs'
+            git push origin main
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
