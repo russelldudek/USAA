@@ -1,0 +1,28 @@
+{
+  "expected": [
+    "index.html",
+    "resume.html",
+    "cover-letter.html",
+    "interview-brief.html",
+    "120-day-plan.html",
+    "hard-objection.html",
+    "automation-assurance-review.html",
+    "styles.css",
+    "brand-tokens.css",
+    "app.js",
+    "brand-intelligence.md",
+    "assets/brand/usaa-logo-official.png",
+    "docs/Russell-Dudek-USAA-Resume.pdf",
+    "docs/Russell-Dudek-USAA-Cover-Letter.pdf",
+    "docs/Russell-Dudek-USAA-Interview-Thesis-Brief.pdf",
+    "docs/Russell-Dudek-USAA-120-Day-Plan.pdf",
+    "docs/Russell-Dudek-USAA-Hard-Objection.pdf",
+    "docs/Russell-Dudek-USAA-Automation-Assurance-Review.pdf",
+    "README.md",
+    "campaign-metadata.json",
+    "artifact-manifest.json",
+    "campaign-audit.md",
+    ".nojekyll",
+    ".github/workflows/pages.yml"
+  ]
+}
