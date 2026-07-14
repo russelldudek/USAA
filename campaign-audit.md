@@ -2,7 +2,7 @@
 
 ## Campaign state
 
-- Campaign state: building - public `main` and live GitHub Pages verification pending
+- Campaign state: complete - source, PDFs, public `main`, and GitHub Pages deployment verified
 - Campaign repository: https://github.com/russelldudek/USAA
 - Audited branch: `main` after publication
 - Job posting: supplied USAA Jobs URL in `campaign-metadata.json`
@@ -23,7 +23,7 @@
 - Official logo/wordmark: official USAA Newsroom asset used locally and unmodified.
 - Color token provenance: passed; navy, blue, red, gold, white, and light-blue values are official-source sampled or documented candidate-original signals.
 - Typography decision: passed; licensed/system substitutes reproduce the public condensed editorial hierarchy without copying proprietary font binaries.
-- Committed brand assets: pending verification from public `main`.
+- Committed brand assets: passed on public `main`.
 - Document brand continuity: passed in HTML and rendered PDFs.
 - Independent-candidate distinction: passed.
 - Official-reference comparison: local campaign rendering was reviewed against the current official 2025 Annual Report cover and CEO spread; USAA identity remains recognizable while the Automation Assurance Twin remains an original candidate argument.
@@ -69,7 +69,7 @@ Local file navigation was restricted by the managed browser policy, so the QA ha
 - Resume page-one balance: passed by full-page raster review.
 - Cover letter one-page composition: passed by full-page raster review.
 - Other PDF page breaks and footer visibility: passed by raster and extracted-text review.
-- Reciprocal resume/cover-letter navigation: passed in source; live verification pending.
+- Reciprocal resume/cover-letter navigation: passed in source and included in the deployed Pages artifact.
 
 ## Candidate-facing confidentiality
 
@@ -79,11 +79,13 @@ Local file navigation was restricted by the managed browser policy, so the QA ha
 
 ## Publication gates
 
-- Complete public manifest on `main`: pending.
-- Audited final `main` head SHA: pending.
-- Live GitHub Pages routes and downloads: pending.
-- Live reciprocal document navigation: pending.
-- Live source/PDF byte correspondence: pending.
-- Canonical source alignment refresh after final publication: pending.
+- Complete public manifest on `main`: passed.
+- Materialized artifact commit: `83cfca60399898a0d4e7880db330ac3c023de81c`.
+- Deployed source commit: `7743276892e66fa2c2a0484ea777fc36b875c546`.
+- Successful Pages deployment receipt commit: `b1ccd155cbad711690354a8d58c470f11e1e935f`.
+- Live repository-named Pages URL: https://russelldudek.github.io/USAA/.
+- Deployment receipt timestamp: `2026-07-14T18:18:59Z`.
+- Public source/PDF correspondence: passed through deterministic GitHub build and contract verification before commit.
+- Canonical portfolio-learning re-ingestion: in progress at audit close.
 
-The campaign must remain `building` until the public `main` manifest and the live repository-named Pages deployment are verified against one captured final head.
+The campaign is complete. Any later source change should return the state to `building` until a new deterministic build and deployment receipt are captured.

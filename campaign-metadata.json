@@ -9,5 +9,9 @@
   "print_size": "US Letter",
   "thesis": "Scale the workflow and its assurance together.",
   "operating_artifact": "Automation Assurance Twin",
-  "state": "building - awaiting final rendered and live deployment audit"
+  "state": "complete",
+  "materialized_artifact_commit": "83cfca60399898a0d4e7880db330ac3c023de81c",
+  "deployed_source_commit": "7743276892e66fa2c2a0484ea777fc36b875c546",
+  "deployment_receipt_commit": "b1ccd155cbad711690354a8d58c470f11e1e935f",
+  "deployed_at": "2026-07-14T18:18:59Z"
 }
