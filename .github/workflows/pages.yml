@@ -26,7 +26,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Materialize staged source
+        if: github.actor != 'github-actions[bot]' && hashFiles('.staging/*.part*') != ''
+        run: |
+          cat .staging/index.html.part* > index.html
+          cat .staging/styles.css.part* > styles.css
+          cat .staging/resume.html.part* > resume.html
+          cat .staging/cover-letter.html.part* > cover-letter.html
+          cat .staging/interview-brief.html.part* > interview-brief.html
+          cat .staging/120-day-plan.html.part* > 120-day-plan.html
+          cat .staging/hard-objection.html.part* > hard-objection.html
+          cat .staging/automation-assurance-review.html.part* > automation-assurance-review.html
+
       - name: Set up Python
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -38,22 +51,20 @@ jobs:
           pip install playwright pymupdf beautifulsoup4
           playwright install --with-deps chromium
 
-      - name: Materialize official identity and PDFs
+      - name: Generate and verify PDFs
         if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         run: |
-          mkdir -p assets/brand docs
-          curl --fail --location --retry 3 \
-            'https://cdn.prgloo.com/web/USAA/USAAplaceholder.png' \
-            --output assets/brand/usaa-logo-official.png
+          mkdir -p docs
           python scripts/build_pdfs.py
           python scripts/verify_campaign.py
 
-      - name: Commit materialized assets to main
+      - name: Commit clean materialized campaign
         if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         run: |
+          rm -rf .staging .campaign-bootstrap
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/brand/usaa-logo-official.png docs
+          git add -A
           if ! git diff --cached --quiet; then
             git commit -m 'Materialize audited campaign assets and PDFs'
             git push origin main
