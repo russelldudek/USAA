@@ -1,0 +1,20 @@
+:root {
+  --usaa-navy: #002d5a; /* source-sampled from official USAA newsroom logo */
+  --usaa-blue: #175f9c; /* source-sampled from 2025 Annual Report editorial panels */
+  --usaa-sky: #78b8d8; /* source-sampled from 2025 Annual Report supporting fields */
+  --usaa-gold: #e9b72f; /* source-sampled from 2025 Annual Report highlight typography */
+  --usaa-red: #c52233; /* source-sampled from 2025 Annual Report rules/page markers */
+  --ink: #10243a;
+  --muted: #526477;
+  --paper: #ffffff;
+  --mist: #eef4f8;
+  --line: #c7d5e1;
+  --assurance-cyan: #31a9b8; /* candidate-original: assurance-layer signal */
+  --assurance-mint: #7fd2c1; /* candidate-original: synchronized-state signal */
+  --hold-amber: #c9821e;
+  --danger: #a8343a;
+  --shadow: 0 18px 55px rgba(0,45,90,.18);
+  --radius: 18px;
+  --font-sans: "Noto Sans", "Liberation Sans", Arial, sans-serif;
+  --font-condensed: "Liberation Sans Narrow", "Arial Narrow", var(--font-sans);
+}
