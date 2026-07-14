@@ -5,7 +5,7 @@
     "cover-letter.html",
     "interview-brief.html",
     "120-day-plan.html",
-    "hard-objection.html",
+    "leadership-advantage.html",
     "automation-assurance-review.html",
     "styles.css",
     "brand-tokens.css",
@@ -16,12 +16,13 @@
     "docs/Russell-Dudek-USAA-Cover-Letter.pdf",
     "docs/Russell-Dudek-USAA-Interview-Thesis-Brief.pdf",
     "docs/Russell-Dudek-USAA-120-Day-Plan.pdf",
-    "docs/Russell-Dudek-USAA-Hard-Objection.pdf",
+    "docs/Russell-Dudek-USAA-Leadership-Advantage.pdf",
     "docs/Russell-Dudek-USAA-Automation-Assurance-Review.pdf",
     "README.md",
     "campaign-metadata.json",
     "artifact-manifest.json",
     "campaign-audit.md",
+    "campaign-qa.json",
     ".nojekyll",
     ".github/workflows/pages.yml"
   ]

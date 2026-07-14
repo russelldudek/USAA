@@ -5,7 +5,6 @@
 - Canonical role: Director, Process Excellence - Process Automation
 - Independent candidate: Russell Dudek
 - Candidate vision: https://russelldudek.github.io/USAA/
-- Public repository: https://github.com/russelldudek/USAA
 
 ## Official sources
 - USAA Newsroom mission: https://newsroom.usaa360.com/about-us/learn-about-our-history-and-mission
@@ -32,4 +31,4 @@ The employer-recognition layer uses USAA navy, white space, strong condensed hea
 The campaign does not reuse member, employee, facility, or military photography. Recognition comes from the official identity, source-sampled palette, annual-report typography behavior, and original role-derived diagrams. This avoids implying Russell's involvement in pictured USAA experiences or outcomes.
 
 ## Use boundary
-This is an independent candidate work product. It is not an official USAA publication and does not imply affiliation, endorsement, authorship, or access to nonpublic information.
+This is an independent candidate work product. It is not an official USAA publication and does not imply affiliation, endorsement, authorship, or access to nonpublic information. Source-control and publication infrastructure are intentionally excluded from recruiter-facing surfaces.

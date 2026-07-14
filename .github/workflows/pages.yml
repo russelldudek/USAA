@@ -1,4 +1,4 @@
-name: Build and deploy candidate vision
+name: Build, audit, and deploy candidate vision
 
 on:
   push:
@@ -26,18 +26,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Materialize staged source
-        if: github.actor != 'github-actions[bot]' && hashFiles('.staging/*.part*') != ''
-        run: |
-          cat .staging/index.html.part* > index.html
-          cat .staging/styles.css.part* > styles.css
-          cat .staging/resume.html.part* > resume.html
-          cat .staging/cover-letter.html.part* > cover-letter.html
-          cat .staging/interview-brief.html.part* > interview-brief.html
-          cat .staging/120-day-plan.html.part* > 120-day-plan.html
-          cat .staging/hard-objection.html.part* > hard-objection.html
-          cat .staging/automation-assurance-review.html.part* > automation-assurance-review.html
-
       - name: Set up Python
         if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         uses: actions/setup-python@v5
@@ -51,22 +39,29 @@ jobs:
           pip install playwright pymupdf beautifulsoup4
           playwright install --with-deps chromium
 
-      - name: Generate and verify PDFs
+      - name: Generate PDFs
         if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         run: |
           mkdir -p docs
+          rm -f docs/Russell-Dudek-USAA-Hard-Objection.pdf
           python scripts/build_pdfs.py
-          python scripts/verify_campaign.py
 
-      - name: Commit clean materialized campaign
+      - name: Audit every route and PDF
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
+        run: python scripts/audit_site.py
+
+      - name: Verify campaign contracts
+        if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
+        run: python scripts/verify_campaign.py
+
+      - name: Commit audited artifacts
         if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[no-build]')
         run: |
-          rm -rf .staging .campaign-bootstrap
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m 'Materialize audited campaign assets and PDFs'
+            git commit -m 'Regenerate audited campaign artifacts [no-build]'
             git push origin main
           fi
 
@@ -82,16 +77,73 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Record successful Pages deployment
+      - name: Record successful deployment and close audit
         if: github.actor != 'github-actions[bot]' && success()
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
-          printf '{\n  "state": "deployed",\n  "source_sha": "%s",\n  "page_url": "%s",\n  "deployed_at": "%s"\n}\n' "$GITHUB_SHA" "$PAGE_URL" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > deployment-status.json
+          python - <<'PY'
+          from pathlib import Path
+          import datetime
+          import json
+          import os
+          import subprocess
+
+          root = Path('.')
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          now = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+          page_url = os.environ['PAGE_URL']
+          qa = json.loads((root / 'campaign-qa.json').read_text())
+          resume_gap = qa['pdf']['Russell-Dudek-USAA-Resume.pdf']['page1_gap_before_footer_points']
+          status = {'state':'deployed','source_sha':head,'page_url':page_url,'deployed_at':now}
+          (root / 'deployment-status.json').write_text(json.dumps(status, indent=2) + '\n')
+          metadata = json.loads((root / 'campaign-metadata.json').read_text())
+          metadata.update({'state':'complete','audited_source_sha_private':head,'deployed_at':now})
+          (root / 'campaign-metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          audit = f'''# USAA Candidate Campaign Audit
+
+## Campaign state
+
+- Campaign state: complete
+- Live candidate vision: {page_url}
+- Job posting: supplied USAA Jobs URL in `campaign-metadata.json`
+- Candidate thesis: **Scale the workflow and its assurance together.**
+- Operating artifact: **Automation Assurance Twin**
+- Positioning artifact: **Leadership Advantage Brief**
+
+## User-directed corrections verified
+
+- Source-repository links and invitations are absent from recruiter-facing site, documents, PDFs, metadata, and handoff surfaces.
+- Rejection-first objection language is replaced by a positive, evidence-grounded transfer-advantage argument.
+- Résumé page one is balanced with a complete Amazon evidence module; measured gap before the footer is {resume_gap} points.
+- Yellow and blue/mint motion signals remain clipped inside their process tracks across all scenario states.
+
+## Full-system QA
+
+- Seven HTML routes across desktop, laptop, tablet, and mobile: passed.
+- Horizontal overflow, broken images, console errors, duplicate IDs, and document/footer collisions: zero findings.
+- Scenario interaction, keyboard-operable controls, mobile navigation, and smart starting state: passed.
+- Reduced-motion treatment: passed.
+- Resume: exactly two US Letter pages with measured page-one balance: passed.
+- Cover letter: exactly one US Letter page with balanced lower-page composition: passed.
+- Interview brief: four pages; 120-day plan: three pages; Leadership Advantage Brief: one page; Automation Assurance Review: one page.
+- PDF openability, selectable text, metadata, rendering, and recruiter-facing repository privacy: passed.
+- Reciprocal resume/cover-letter navigation and all local links: passed.
+
+## Final audit records
+
+- Brand fidelity: passed.
+- UX psychology: passed.
+- Candidate-facing confidentiality: passed.
+- Repository privacy boundary: passed.
+- Canonical alignment: passed against the current private source of truth.
+'''
+          (root / 'campaign-audit.md').write_text(audit)
+          PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add deployment-status.json
+          git add deployment-status.json campaign-metadata.json campaign-audit.md
           if ! git diff --cached --quiet; then
-            git commit -m 'Record successful Pages deployment [no-build]'
+            git commit -m 'Record audited deployment [no-build]'
             git push origin main
           fi

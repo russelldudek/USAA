@@ -3,7 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 import base64
 import re
-import sys
 
 import fitz
 from playwright.sync_api import sync_playwright
@@ -17,7 +16,7 @@ ROUTES = {
     "cover-letter.html": "Russell-Dudek-USAA-Cover-Letter.pdf",
     "interview-brief.html": "Russell-Dudek-USAA-Interview-Thesis-Brief.pdf",
     "120-day-plan.html": "Russell-Dudek-USAA-120-Day-Plan.pdf",
-    "hard-objection.html": "Russell-Dudek-USAA-Hard-Objection.pdf",
+    "leadership-advantage.html": "Russell-Dudek-USAA-Leadership-Advantage.pdf",
     "automation-assurance-review.html": "Russell-Dudek-USAA-Automation-Assurance-Review.pdf",
 }
 EXPECTED_PAGES = {
@@ -25,9 +24,13 @@ EXPECTED_PAGES = {
     "Russell-Dudek-USAA-Cover-Letter.pdf": 1,
     "Russell-Dudek-USAA-Interview-Thesis-Brief.pdf": 4,
     "Russell-Dudek-USAA-120-Day-Plan.pdf": 3,
-    "Russell-Dudek-USAA-Hard-Objection.pdf": 1,
+    "Russell-Dudek-USAA-Leadership-Advantage.pdf": 1,
     "Russell-Dudek-USAA-Automation-Assurance-Review.pdf": 1,
 }
+
+legacy_pdf = DOCS / "Russell-Dudek-USAA-Hard-Objection.pdf"
+if legacy_pdf.exists():
+    legacy_pdf.unlink()
 
 CSS = (ROOT / "brand-tokens.css").read_text(encoding="utf-8") + "\n" + (
     ROOT / "styles.css"
