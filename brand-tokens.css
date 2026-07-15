@@ -22,10 +22,10 @@
 /* Shared candidate-document header: approved July 2026 composition. */
 .doc-body .paper .doc-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 2.82in;
+  grid-template-columns: minmax(0, 1fr) 2.68in;
   column-gap: .28in;
   align-items: end;
-  min-height: .96in;
+  min-height: .98in;
   padding-bottom: .14in;
   margin-bottom: .18in;
   border-bottom: 3px solid var(--usaa-navy);
@@ -43,15 +43,16 @@
 
 .doc-body .paper .doc-role {
   margin: 0;
-  max-width: 3.75in;
+  max-width: 3.95in;
   font-family: var(--font-condensed);
-  font-size: 12.2pt;
+  font-size: 11.4pt;
   font-weight: 900;
   line-height: 1.08;
   letter-spacing: .035em;
   text-transform: uppercase;
   color: var(--usaa-red);
   overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .doc-body .paper .doc-header > div:first-child::after {
@@ -69,8 +70,8 @@
 
 .doc-body .paper .doc-contact {
   position: relative;
-  min-height: .86in;
-  padding-top: .39in;
+  min-height: .88in;
+  padding-top: .47in;
   text-align: right;
   font-size: 0;
   line-height: 1.3;
@@ -81,7 +82,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: .40in;
+  width: .48in;
   height: auto;
   margin: 0;
   object-fit: contain;
@@ -91,7 +92,7 @@
   display: block;
   margin: 0 0 4pt;
   font-family: var(--font-condensed);
-  font-size: 12.8pt;
+  font-size: 13.2pt;
   font-weight: 900;
   line-height: 1;
   color: var(--usaa-navy);
@@ -103,7 +104,7 @@
 
 .doc-body .paper .doc-contact a {
   font-family: var(--font-sans);
-  font-size: 7.15pt;
+  font-size: 7.55pt;
   font-weight: 600;
   line-height: 1.42;
   color: #294862;
@@ -171,13 +172,13 @@
 
 @media print {
   .doc-body .paper .doc-header {
-    grid-template-columns: minmax(0, 1fr) 2.82in;
+    grid-template-columns: minmax(0, 1fr) 2.68in;
     gap: .28in;
-    min-height: .96in;
+    min-height: .98in;
   }
 
   .doc-body .paper .doc-contact {
-    padding-top: .39in;
+    padding-top: .47in;
     text-align: right;
   }
 
@@ -185,11 +186,11 @@
     top: 0;
     right: 0;
     left: auto;
-    width: .40in;
+    width: .48in;
   }
 
   .doc-body .paper .doc-contact a {
-    font-size: 7.15pt;
+    font-size: 7.55pt;
     white-space: nowrap;
   }
 }
